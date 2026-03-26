@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TrustLens</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- ====== HEADER ====== -->
+      <header id="header">
+        <div class="header-left">
+          <div class="logo">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </div>
+          <h1>TrustLens</h1>
+        </div>
+        <button id="analyzeBtn" title="Analyze current page">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="23 4 23 10 17 10" />
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+          </svg>
+          <span>Analyze</span>
+        </button>
+      </header>
+
+      <!-- ====== WELCOME STATE ====== -->
+      <div id="state-welcome" class="state">
+        <div class="welcome-icon">🔍</div>
+        <p class="welcome-text">
+          Click <strong>Analyze</strong> to scan the current page for
+          misinformation risk signals.
+        </p>
+      </div>
+
+      <!-- ====== LOADING STATE ====== -->
+      <div id="state-loading" class="state" style="display: none">
+        <div class="loader">
+          <div class="loader-ring"></div>
+        </div>
+        <p class="loading-text">Analyzing page…</p>
+        <p class="loading-sub" id="loading-step">Extracting content</p>
+      </div>
+
+      <!-- ====== ERROR STATE ====== -->
+      <div id="state-error" class="state" style="display: none">
+        <div class="error-icon">⚠️</div>
+        <p class="error-title">Analysis failed</p>
+        <p class="error-message" id="error-message">Unknown error occurred.</p>
+        <button id="retryBtn" class="btn-secondary">Try again</button>
+      </div>
+
+      <!-- ====== RESULTS STATE ====== -->
+      <div id="state-results" class="state" style="display: none">
+        <!-- Risk Badge -->
+        <div id="risk-badge">
+          <div class="risk-score-ring">
+            <svg viewBox="0 0 120 120">
+              <circle
+                class="ring-bg"
+                cx="60"
+                cy="60"
+                r="52"
+                fill="none"
+                stroke-width="10"
+              />
+              <circle
+                id="ring-progress"
+                class="ring-fill"
+                cx="60"
+                cy="60"
+                r="52"
+                fill="none"
+                stroke-width="10"
+                stroke-dasharray="326.73"
+                stroke-dashoffset="326.73"
+              />
+            </svg>
+            <div class="risk-score-number">
+              <span id="risk-score-value">0</span>
+            </div>
+          </div>
+          <div class="risk-meta">
+            <span id="risk-label" class="risk-label">—</span>
+            <span id="risk-confidence" class="risk-confidence"></span>
+          </div>
+        </div>
+
+        <!-- Page Type -->
+        <section class="card">
+          <h3 class="card-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+              />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            Page Type
+          </h3>
+          <div class="page-type-row">
+            <span id="page-type-tag" class="tag tag-type">—</span>
+            <span id="page-type-confidence" class="confidence-text"></span>
+          </div>
+        </section>
+
+        <!-- Score Breakdown -->
+        <section class="card">
+          <h3 class="card-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
+            Score Breakdown
+          </h3>
+          <div class="scores-grid">
+            <div class="score-item">
+              <div class="score-header">
+                <span class="score-name">Language Risk</span>
+                <span class="score-value" id="score-lang-val">0</span>
+              </div>
+              <div class="bar">
+                <div class="bar-fill" id="bar-lang"></div>
+              </div>
+            </div>
+            <div class="score-item">
+              <div class="score-header">
+                <span class="score-name">Source Trust</span>
+                <span class="score-value" id="score-source-val">0</span>
+              </div>
+              <div class="bar">
+                <div class="bar-fill bar-inverted" id="bar-source"></div>
+              </div>
+            </div>
+            <div class="score-item">
+              <div class="score-header">
+                <span class="score-name">Domain Trust</span>
+                <span class="score-value" id="score-domain-val">0</span>
+              </div>
+              <div class="bar">
+                <div class="bar-fill bar-inverted" id="bar-domain"></div>
+              </div>
+            </div>
+            <div class="score-item">
+              <div class="score-header">
+                <span class="score-name">Transparency</span>
+                <span class="score-value" id="score-trans-val">0</span>
+              </div>
+              <div class="bar">
+                <div class="bar-fill bar-inverted" id="bar-trans"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Detected Patterns -->
+        <section class="card" id="patterns-card">
+          <h3 class="card-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+              />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            Detected Patterns
+          </h3>
+          <div id="patterns-container" class="tags-container"></div>
+        </section>
+
+        <!-- Site Security -->
+        <section class="card">
+          <h3 class="card-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+              />
+            </svg>
+            Site Security
+          </h3>
+          <div id="security-grid" class="security-grid"></div>
+        </section>
+
+        <!-- Explanations -->
+        <section class="card">
+          <h3 class="card-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="16" x2="12" y2="12" />
+              <line x1="12" y1="8" x2="12.01" y2="8" />
+            </svg>
+            Why This Rating?
+          </h3>
+          <ul id="explanations-list" class="explanations-list"></ul>
+        </section>
+
+        <!-- Disclaimer -->
+        <div id="disclaimer">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="16" x2="12" y2="12" />
+            <line x1="12" y1="8" x2="12.01" y2="8" />
+          </svg>
+          <span
+            >Assistive analysis only — not a definitive truth
+            detector.</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
