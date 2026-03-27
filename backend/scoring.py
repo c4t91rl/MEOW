@@ -116,7 +116,7 @@ def compute_final_score(
 
     # ---- Adjusted component scores ----
     # language_trust: 0=safe, 100=very risky → wyższy = gorszy
-    adj_language = language.language_trust * multipliers["language"]
+    adj_language = (100 - language.language_trust) * multipliers["language"]
 
     # source_trust: 0=bad, 100=good → odwracamy: 100-x = risk
     adj_source_risk = (100 - sources.source_trust) * multipliers["source"]
