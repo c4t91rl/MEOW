@@ -203,11 +203,11 @@ def _sentence_stats(text: str) -> dict:
 def analyze_language(text: str, title: str) -> LanguageResult:
     """
     Analizuje tekst pod kątem emocjonalności, clickbaitu, języka spiskowego.
-    Zwraca language_risk 0-100.
+    Zwraca language_trust 0-100.
     """
     if not text.strip():
         return LanguageResult(
-            language_risk=0,
+            language_trust=0,
             signals=["Page has no readable text content"],
             details={}
         )
@@ -253,8 +253,8 @@ def analyze_language(text: str, title: str) -> LanguageResult:
     # ============================
     # COMPOSITE SCORE
     # ============================
-    # Wagi — co wpływa na language_risk
-    language_risk_raw = (
+    # Wagi — co wpływa na language_trust
+    language_trust_raw = (
         emotional_score * 25 +
         conspiracy_score * 25 +
         cb_score * 20 +
@@ -266,7 +266,7 @@ def analyze_language(text: str, title: str) -> LanguageResult:
         title_emotional_score * 5
     )
 
-    language_risk = max(0, min(100, int(language_risk_raw)))
+    language_trust = max(0, min(100, int(language_trust_raw)))
 
     # ============================
     # SIGNALS (human-readable)
@@ -298,7 +298,7 @@ def analyze_language(text: str, title: str) -> LanguageResult:
         signals.append("Language appears neutral and measured")
 
     return LanguageResult(
-        language_risk=language_risk,
+        language_trust=language_trust,
         signals=signals,
         details={
             "emotional_density": round(emotional_score, 3),
