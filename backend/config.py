@@ -11,7 +11,7 @@ class Settings(BaseSettings):
 
     # limits
     max_text_length: int = 15000
-    max_links: int = 300
+    max_links: int = 30000
     llm_timeout: int = 20
     domain_check_timeout: int = 6
 
