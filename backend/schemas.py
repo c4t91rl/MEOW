@@ -67,17 +67,17 @@ class AnalyzeResponse(BaseModel):
 
 class RuleBasedScores(BaseModel):
     """Wyniki z algorytmu regułowego (0.0–1.0 per oś)."""
-    vulgarity: float = 0.0
-    negativity: float = 0.0
-    emotionality: float = 0.0
-    speculativeness: float = 0.0
-    clickbait: float = 0.0
-    conspiracy: float = 0.0
-    formatting_abuse: float = 0.0
+    vulgarity: float = 0.5
+    negativity: float = 0.5
+    emotionality: float = 0.5
+    speculativeness: float = 0.5
+    clickbait: float = 0.5
+    conspiracy: float = 0.5
+    formatting_abuse: float = 0.5
     # ─── NOWE ───
-    informality: float = 0.0      # 0 = formalny, 1 = slang/imageboard
-    toxicity: float = 0.0         # 0 = kulturalny, 1 = toksyczny/agresywny
-    text_quality: float = 1.0     # 1 = wysoka jakość, 0 = niska
+    informality: float = 0.5      # 0 = formalny, 1 = slang/imageboard
+    toxicity: float = 0.5         # 0 = kulturalny, 1 = toksyczny/agresywny
+    text_quality: float = 0.5     # 1 = wysoka jakość, 0 = niska
 
 
 class AILanguageScores(BaseModel):

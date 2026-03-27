@@ -687,13 +687,13 @@ def rule_based_analysis(text: str, title: str) -> tuple[RuleBasedScores, list[st
     # Format: _dual_score(hits, per_100, density_ceiling, absolute_ceiling)
     # Niższe ceiling = wyższa czułość
 
-    vulgarity_score = _dual_score(vulgar_hits, per_100, 1.5, 4)
-    emotionality_score = _dual_score(emotional_hits, per_100, 3.0, 6)
-    negativity_score = _dual_score(negative_hits, per_100, 3.0, 6)
-    speculative_score = _dual_score(speculative_hits, per_100, 2.5, 5)
-    conspiracy_score = _dual_score(conspiracy_hits, per_100, 2.0, 4)
-    informal_score = _dual_score(informal_hits, per_100, 2.0, 5)
-    toxic_score = _dual_score(toxic_hits, per_100, 1.0, 3)
+    vulgarity_score = _dual_score(vulgar_hits, per_100, 1, 2)
+    emotionality_score = _dual_score(emotional_hits, per_100, 1.5, 3)
+    negativity_score = _dual_score(negative_hits, per_100, 1.5, 3)
+    speculative_score = _dual_score(speculative_hits, per_100, 1.5, 2.5)
+    conspiracy_score = _dual_score(conspiracy_hits, per_100, 1.0, 2)
+    informal_score = _dual_score(informal_hits, per_100, 1.0, 2.5)
+    toxic_score = _dual_score(toxic_hits, per_100, 0.5, 1.5)
 
     # Agresja (pattern-based)
     aggressive_score = _saturate(aggressive_hits, 2.0)
