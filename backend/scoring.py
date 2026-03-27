@@ -27,7 +27,7 @@ TYPE_MULTIPLIERS = {
         "language": 0.20,
         "source": 0.30,
         "domain": 1.0,
-        "transparency": 0.40,
+        "transparency": 0.20,
     },
     "opinion": {
         "language": 0.50,
@@ -45,7 +45,7 @@ TYPE_MULTIPLIERS = {
         "language": 0.60,
         "source": 0.50,
         "domain": 1.0,
-        "transparency": 0.40,
+        "transparency": 0.0,
     },
     "commercial": {
         "language": 0.50,
@@ -63,7 +63,7 @@ TYPE_MULTIPLIERS = {
         "language": 0.80,
         "source": 0.90,
         "domain": 0.80,
-        "transparency": 1.0,
+        "transparency": 0.8,
     },
     "news": {
         "language": 1.0,
@@ -75,7 +75,7 @@ TYPE_MULTIPLIERS = {
         "language": 0.80,
         "source": 0.80,
         "domain": 1.0,
-        "transparency": 0.80,
+        "transparency": 0.0,
     },
 }
 
