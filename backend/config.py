@@ -4,7 +4,7 @@ from functools import lru_cache
 
 class Settings(BaseSettings):
     gemini_api_key: str = ""
-    gemini_model: str = "gemini-1.5-flash"
+    gemini_model: str = "gemma-3-4b-it"
     port: int = 8000
     cache_ttl_seconds: int = 300
     log_level: str = "info"

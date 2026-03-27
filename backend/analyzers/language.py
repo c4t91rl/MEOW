@@ -18,6 +18,7 @@ Zmiany vs v1:
 import re
 import math
 import logging
+from .ai_handler import analyze_language_ai
 from schemas import LanguageResult, RuleBasedScores, AILanguageScores
 
 logger = logging.getLogger(__name__)
@@ -863,9 +864,10 @@ def rule_based_analysis(text: str, title: str) -> tuple[RuleBasedScores, list[st
 
 async def _get_ai_scores(text: str, title: str) -> AILanguageScores | None:
     try:
-        from ai_handler import analyze_language_ai
         result = await analyze_language_ai(text, title)
         return result
+        # Only for testing :3
+        # throw(ImportError)
     except ImportError:
         logger.warning("ai_handler nie jest dostępny — pomijam analizę AI")
         return None
@@ -989,31 +991,31 @@ async def analyze_language(text: str, title: str = "") -> LanguageResult:
     )
 
 
-def analyze_language_sync(text: str, title: str = "") -> LanguageResult:
-    """Wariant synchroniczny — tylko reguły, bez AI."""
-    rule_scores, rule_signals, rule_details = rule_based_analysis(text, title)
+# def analyze_language_sync(text: str, title: str = "") -> LanguageResult:
+#     """Wariant synchroniczny — tylko reguły, bez AI."""
+#     rule_scores, rule_signals, rule_details = rule_based_analysis(text, title)
 
-    language_trust = _compute_language_trust(
-        vulgarity=rule_scores.vulgarity,
-        negativity=rule_scores.negativity,
-        emotionality=rule_scores.emotionality,
-        speculativeness=rule_scores.speculativeness,
-        conspiracy=rule_scores.conspiracy,
-        clickbait=rule_scores.clickbait,
-        formatting=rule_scores.formatting_abuse,
-        informality=rule_scores.informality,
-        toxicity=rule_scores.toxicity,
-        text_quality=rule_scores.text_quality,
-    )
+#     language_trust = _compute_language_trust(
+#         vulgarity=rule_scores.vulgarity,
+#         negativity=rule_scores.negativity,
+#         emotionality=rule_scores.emotionality,
+#         speculativeness=rule_scores.speculativeness,
+#         conspiracy=rule_scores.conspiracy,
+#         clickbait=rule_scores.clickbait,
+#         formatting=rule_scores.formatting_abuse,
+#         informality=rule_scores.informality,
+#         toxicity=rule_scores.toxicity,
+#         text_quality=rule_scores.text_quality,
+#     )
 
-    return LanguageResult(
-        language_trust=language_trust,
-        vulgarity=rule_scores.vulgarity,
-        negativity=rule_scores.negativity,
-        emotionality=rule_scores.emotionality,
-        speculativeness=rule_scores.speculativeness,
-        signals=rule_signals,
-        details={**rule_details, "ai_available": False},
-        rule_based=rule_scores,
-        ai_based=None,
-    )
+#     return LanguageResult(
+#         language_trust=language_trust,
+#         vulgarity=rule_scores.vulgarity,
+#         negativity=rule_scores.negativity,
+#         emotionality=rule_scores.emotionality,
+#         speculativeness=rule_scores.speculativeness,
+#         signals=rule_signals,
+#         details={**rule_details, "ai_available": False},
+#         rule_based=rule_scores,
+#         ai_based=None,
+#     )
