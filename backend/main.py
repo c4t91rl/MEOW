@@ -116,7 +116,6 @@ async def analyze(request: AnalyzeRequest):
         # Domain + LLM page type = async, mogą trwać dłużej
         
         language_result = await analyze_language(text, title)
-        print(language_result)
         source_result = analyze_sources(url, links, meta, text)
 
         # Zbierz sygnały heurystyczne dla LLM

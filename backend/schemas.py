@@ -74,6 +74,10 @@ class RuleBasedScores(BaseModel):
     clickbait: float = 0.0
     conspiracy: float = 0.0
     formatting_abuse: float = 0.0
+    # ─── NOWE ───
+    informality: float = 0.0      # 0 = formalny, 1 = slang/imageboard
+    toxicity: float = 0.0         # 0 = kulturalny, 1 = toksyczny/agresywny
+    text_quality: float = 1.0     # 1 = wysoka jakość, 0 = niska
 
 
 class AILanguageScores(BaseModel):
