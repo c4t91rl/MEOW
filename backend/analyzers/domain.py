@@ -26,12 +26,67 @@ TYPOSQUAT_PATTERNS = [
     (r"l[i1]nk[e3]d[i1]n", "linkedin.com"),
 ]
 
-KNOWN_LEGIT = [
-    "facebook.com", "google.com", "twitter.com", "x.com",
-    "amazon.com", "microsoft.com", "youtube.com", "reddit.com",
-    "wikipedia.org", "instagram.com", "linkedin.com",
-]
+# KNOWN_LEGIT = [
+#     "facebook.com", "google.com", "twitter.com", "x.com",
+#     "amazon.com", "microsoft.com", "youtube.com", "reddit.com",
+#     "wikipedia.org", "instagram.com", "linkedin.com",
+# ]
 
+# zkopiowane z sources.py
+KNOWN_LEGIT = [
+    # Encyklopedie / wiedza
+    "wikipedia.org",
+    "britannica.com",
+    "scholar.google.com",
+    "wolframalpha.com",
+
+    # Nauka / medycyna
+    "nature.com",
+    "science.org",
+    "thelancet.com",
+    "nejm.org",
+    "pubmed.ncbi.nlm.nih.gov",
+    "nih.gov",
+    "cdc.gov",
+    "who.int",
+
+    # Agencje prasowe
+    "reuters.com",
+    "apnews.com",
+    "afp.com",
+
+    # Rządy
+    "gov.pl",
+    "gov.uk",
+    "gov",
+    "europa.eu",
+    "un.org",
+
+    # Fact-checking
+    "snopes.com",
+    "factcheck.org",
+    "politifact.com",
+    "fullfact.org",
+    "demagog.org.pl",
+
+    # Duże media (nie = prawda, ale = transparentne)
+    "bbc.com",
+    "bbc.co.uk",
+    "nytimes.com",
+    "theguardian.com",
+    "washingtonpost.com",
+    "economist.com",
+
+    # Uczelnie
+    "edu",
+    "edu.pl",
+    "ac.uk",
+
+    # Statystyki
+    "statista.com",
+    "ourworldindata.org",
+    "data.worldbank.org",
+]
 # TLD-y które częściej goszczą spam
 RISKY_TLDS = [
     ".xyz", ".top", ".club", ".work", ".click",
@@ -164,6 +219,7 @@ async def analyze_domain(url: str) -> DomainResult:
     hostname = parsed.hostname or ""
     is_https = parsed.scheme == "https"
     tld = _get_tld(hostname)
+    base = _get_base_domain(hostname.lower())
 
     # Suspicious check (synchronous)
     suspicious, suspicion_reasons = _check_suspicious(hostname)
@@ -204,6 +260,9 @@ async def analyze_domain(url: str) -> DomainResult:
     # Risky TLD
     if tld in RISKY_TLDS:
         domain_trust -= 10
+
+    if base in KNOWN_LEGIT:
+        domain_trust=100
 
     domain_trust = max(0, min(100, domain_trust))
 
