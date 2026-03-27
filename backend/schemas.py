@@ -32,6 +32,7 @@ class PageType(BaseModel):
     label: str = "unknown"
     confidence: float = 0.0
     rationale: str = ""
+    weights: list[float] = [0.0, 0.0, 0.0, 0.0]
 
 
 class Scores(BaseModel):

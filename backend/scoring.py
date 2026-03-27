@@ -212,6 +212,7 @@ def compute_final_score(
             label=page_type_result.page_type,
             confidence=round(page_type_result.confidence, 2),
             rationale=page_type_result.rationale,
+            weights=[multipliers["language"], multipliers["source"], multipliers["domain"], multipliers["transparency"]]
         ),
         misinfo_patterns=patterns,
         scores=Scores(
