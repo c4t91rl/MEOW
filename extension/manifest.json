@@ -1,13 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "TrustLens",
+  "name": "MEOW",
   "version": "1.0.0",
-  "description": "Misinformation risk analysis for any webpage",
+  "description": "Monitoring & Evaluation of Online Writing",
   "permissions": ["activeTab", "scripting"],
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {
-      "128": "icons/icon128.png"
+      "128": "icons/logo-w-128.png"
     }
   },
   "content_scripts": [
@@ -18,6 +18,6 @@
     }
   ],
   "icons": {
-    "128": "icons/icon128.png"
+    "128": "icons/logo-w-128.png"
   }
 }
