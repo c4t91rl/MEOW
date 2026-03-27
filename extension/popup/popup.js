@@ -2,7 +2,7 @@
    CONFIG
    ================================ */
 const API_URL = "http://localhost:8000/analyze";
-// zmienicie na prod URL, np. "https://trustlens-api.railway.app/analyze"
+// zmienicie na prod URL, np. "https://meow.railway.app/analyze"
 
 /* ================================
    DOM REFS
@@ -410,7 +410,7 @@ async function runAnalysis() {
 
     renderResults(result);
   } catch (err) {
-    console.error("TrustLens error:", err);
+    console.error("MEOW error:", err);
     showError(err.message || "An unexpected error occurred.");
   } finally {
     analyzeBtn.disabled = false;

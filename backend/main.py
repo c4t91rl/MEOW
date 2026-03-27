@@ -46,7 +46,7 @@ async def lifespan(app: FastAPI):
 # FASTAPI APP
 # ============================
 app = FastAPI(
-    title="TrustLens API",
+    title="MEOW API",
     description="Misinformation risk analysis backend",
     version="1.0.0",
     lifespan=lifespan,
@@ -68,7 +68,7 @@ app.add_middleware(
 @app.get("/")
 async def root():
     return {
-        "service": "TrustLens API",
+        "service": "MEOW API",
         "status": "running",
         "version": "1.0.0",
         "llm_enabled": bool(settings.gemini_api_key),

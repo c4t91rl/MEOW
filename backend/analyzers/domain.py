@@ -234,7 +234,7 @@ async def analyze_domain(url: str) -> DomainResult:
     return DomainResult(
         domain_trust=domain_trust,
         signals=signals,
-        security=Security(
+        security=Security( 
             https=is_https,
             domain_age_days=domain_age_days,
             suspicious_hostname=suspicious,
