@@ -2,8 +2,9 @@ import json
 import logging
 from typing import Optional
 
-import openai
 import httpx
+from google import genai
+from google.genai import types
 
 from config import get_settings
 from schemas import LLMPageTypeResult, LLMMisinfoResult
@@ -11,14 +12,15 @@ from schemas import LLMPageTypeResult, LLMMisinfoResult
 logger = logging.getLogger(__name__)
 
 
-def _get_client() -> Optional[openai.AsyncOpenAI]:
+def _get_client() -> Optional[genai.Client]:
     settings = get_settings()
-    if not settings.openai_api_key:
-        logger.warning("No OpenAI API key — LLM features disabled")
+    if not settings.gemini_api_key:
+        logger.warning("No Gemini API key — LLM features disabled")
         return None
-    return openai.AsyncOpenAI(
-        api_key=settings.openai_api_key,
-        timeout=settings.llm_timeout,
+    
+    return genai.Client(
+        api_key=settings.gemini_api_key,
+        http_options=types.HttpOptions(timeout=settings.llm_timeout * 1000),  # timeout in ms
     )
 
 
@@ -102,14 +104,17 @@ async def classify_page_type(
 
     try:
         settings = get_settings()
-        response = await client.chat.completions.create(
-            model=settings.openai_model,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.1,
-            max_tokens=200,
+        
+        response = await client.aio.models.generate_content(
+            model=settings.gemini_model,
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                temperature=0.1,
+                max_output_tokens=200,
+            ),
         )
 
-        content = response.choices[0].message.content or ""
+        content = response.text or ""
         parsed = _safe_parse_json(content)
 
         if parsed and "page_type" in parsed:
@@ -127,7 +132,7 @@ async def classify_page_type(
                 rationale=str(parsed.get("rationale", "")),
             )
 
-    except openai.APITimeoutError:
+    except TimeoutError:
         logger.warning("LLM timeout for page type classification")
     except Exception as e:
         logger.error(f"LLM page type error: {e}")
@@ -223,14 +228,17 @@ async def detect_misinfo_patterns(
 
     try:
         settings = get_settings()
-        response = await client.chat.completions.create(
-            model=settings.openai_model,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.2,
-            max_tokens=500,
+        
+        response = await client.aio.models.generate_content(
+            model=settings.gemini_model,
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                temperature=0.2,
+                max_output_tokens=500,
+            ),
         )
 
-        content = response.choices[0].message.content or ""
+        content = response.text or ""
         parsed = _safe_parse_json(content)
 
         if parsed and "labels" in parsed:
@@ -255,7 +263,7 @@ async def detect_misinfo_patterns(
                 explanations=explanations,
             )
 
-    except openai.APITimeoutError:
+    except TimeoutError:
         logger.warning("LLM timeout for misinfo detection")
     except Exception as e:
         logger.error(f"LLM misinfo error: {e}")

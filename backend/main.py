@@ -36,8 +36,8 @@ logger = logging.getLogger("trustlens")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("TrustLens API starting up")
-    logger.info(f"OpenAI model: {settings.openai_model}")
-    logger.info(f"LLM enabled: {bool(settings.openai_api_key)}")
+    logger.info(f"gemini model: {settings.gemini_model}")
+    logger.info(f"LLM enabled: {bool(settings.gemini_api_key)}")
     yield
     logger.info("TrustLens API shutting down")
 
@@ -71,7 +71,7 @@ async def root():
         "service": "TrustLens API",
         "status": "running",
         "version": "1.0.0",
-        "llm_enabled": bool(settings.openai_api_key),
+        "llm_enabled": bool(settings.gemini_api_key),
         "cache_size": cache.size,
     }
 
