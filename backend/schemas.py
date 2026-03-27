@@ -5,6 +5,7 @@ from typing import Optional
 # ============================
 # REQUEST
 # ============================
+
 class PageMeta(BaseModel):
     description: str = ""
     author: str = ""
@@ -26,6 +27,7 @@ class AnalyzeRequest(BaseModel):
 # ============================
 # RESPONSE
 # ============================
+
 class PageType(BaseModel):
     label: str = "unknown"
     confidence: float = 0.0
@@ -33,7 +35,7 @@ class PageType(BaseModel):
 
 
 class Scores(BaseModel):
-    language_risk: int = 0
+    language_trust: int = 0
     source_trust: int = 50
     domain_trust: int = 50
     transparency: int = 50
@@ -60,13 +62,50 @@ class AnalyzeResponse(BaseModel):
 
 
 # ============================
-# INTERNAL — intermediate results
+# INTERNAL — Language Analysis
 # ============================
+
+class RuleBasedScores(BaseModel):
+    """Wyniki z algorytmu regułowego (0.0–1.0 per oś)."""
+    vulgarity: float = 0.0
+    negativity: float = 0.0
+    emotionality: float = 0.0
+    speculativeness: float = 0.0
+    clickbait: float = 0.0
+    conspiracy: float = 0.0
+    formatting_abuse: float = 0.0
+
+
+class AILanguageScores(BaseModel):
+    """Wyniki z modelu AI (0.0–1.0 per oś)."""
+    vulgarity: float = 0.0
+    negativity: float = 0.0
+    emotionality: float = 0.0
+    speculativeness: float = 0.0
+    confidence: float = 0.0
+
+
 class LanguageResult(BaseModel):
-    language_risk: int = 0
+    """Końcowy wynik analizy językowej — JEDNA definicja."""
+    language_trust: int = 0
+
+    # Cztery osie oceny (0.0–1.0, im wyżej tym gorzej)
+    vulgarity: float = 0.0
+    negativity: float = 0.0
+    emotionality: float = 0.0
+    speculativeness: float = 0.0
+
     signals: list[str] = Field(default_factory=list)
     details: dict = Field(default_factory=dict)
 
+    # Składowe — do debugowania
+    rule_based: Optional[RuleBasedScores] = None
+    ai_based: Optional[AILanguageScores] = None
+
+
+# ============================
+# INTERNAL — Source & Domain
+# ============================
 
 class SourceResult(BaseModel):
     source_trust: int = 50
@@ -80,6 +119,10 @@ class DomainResult(BaseModel):
     signals: list[str] = Field(default_factory=list)
     security: Security = Field(default_factory=Security)
 
+
+# ============================
+# INTERNAL — LLM Results
+# ============================
 
 class LLMPageTypeResult(BaseModel):
     page_type: str = "unknown"

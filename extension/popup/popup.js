@@ -245,7 +245,7 @@ function renderResults(data) {
   // ---- Score Breakdown ----
   const scores = data.scores || {};
 
-  renderBar("lang", scores.language_risk ?? 0, false);
+  renderBar("lang", scores.language_trust ?? 0, true);
   renderBar("source", scores.source_trust ?? 50, true);
   renderBar("domain", scores.domain_trust ?? 50, true);
   renderBar("trans", scores.transparency ?? 50, true);

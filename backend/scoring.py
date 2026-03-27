@@ -14,7 +14,7 @@ from schemas import (
 # PAGE TYPE MULTIPLIERS
 # ============================
 # Dla każdego typu strony, jak bardzo liczy się dany sygnał.
-# Np. poetry: language_risk * 0.1 — bo emocjonalny język jest naturalny.
+# Np. poetry: language_trust * 0.1 — bo emocjonalny język jest naturalny.
 
 TYPE_MULTIPLIERS = {
     "poetry": {
@@ -115,8 +115,8 @@ def compute_final_score(
     multipliers = TYPE_MULTIPLIERS.get(page_type, TYPE_MULTIPLIERS["unknown"])
 
     # ---- Adjusted component scores ----
-    # language_risk: 0=safe, 100=very risky → wyższy = gorszy
-    adj_language = language.language_risk * multipliers["language"]
+    # language_trust: 0=safe, 100=very risky → wyższy = gorszy
+    adj_language = language.language_trust * multipliers["language"]
 
     # source_trust: 0=bad, 100=good → odwracamy: 100-x = risk
     adj_source_risk = (100 - sources.source_trust) * multipliers["source"]
@@ -215,7 +215,7 @@ def compute_final_score(
         ),
         misinfo_patterns=patterns,
         scores=Scores(
-            language_risk=language.language_risk,
+            language_trust=language.language_trust,
             source_trust=sources.source_trust,
             domain_trust=domain.domain_trust,
             transparency=sources.transparency,
