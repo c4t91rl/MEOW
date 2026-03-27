@@ -10,8 +10,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           }
         })
         .filter((h) => h && h.startsWith("http"))
-        .slice(0, 300);
-
+        .slice(0, 30000);
       const getMeta = (selectors) => {
         for (const sel of selectors) {
           const el = document.querySelector(sel);
