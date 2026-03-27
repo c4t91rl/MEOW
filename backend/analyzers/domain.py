@@ -252,7 +252,8 @@ async def analyze_domain(url: str) -> DomainResult:
             domain_trust += 10
         else:
             domain_trust += 20
-
+    else:
+        domain_trust-=10
     # Suspicious hostname
     if suspicious:
         domain_trust -= min(len(suspicion_reasons) * 10, 25)
