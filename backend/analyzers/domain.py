@@ -273,11 +273,11 @@ async def analyze_domain(url: str) -> DomainResult:
     signals = []
 
     if not is_https:
-        signals.append("Site does not use HTTPS — connection is not encrypted")
+        signals.append("Site does not use HTTPS - connection is not encrypted")
 
     if domain_age_days is not None:
         if domain_age_days < 30:
-            signals.append(f"Domain registered only {domain_age_days} days ago — very new")
+            signals.append(f"Domain registered only {domain_age_days} days ago - very new")
         elif domain_age_days < 90:
             signals.append(f"Domain is less than 3 months old ({domain_age_days} days)")
         elif domain_age_days > 1825:  # 5+ years

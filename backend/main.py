@@ -52,7 +52,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS — pozwól extension na łączenie się
+# CORS - pozwól extension na łączenie się
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -87,7 +87,7 @@ async def health():
 @app.post("/analyze", response_model=AnalyzeResponse)
 async def analyze(request: AnalyzeRequest):
     """
-    Główny endpoint — przyjmuje dane strony, zwraca analizę ryzyka.
+    Główny endpoint - przyjmuje dane strony, zwraca analizę ryzyka.
     """
     url = request.url
 
@@ -121,7 +121,7 @@ async def analyze(request: AnalyzeRequest):
         # Zbierz sygnały heurystyczne dla LLM
         heuristic_signals = language_result.signals + source_result.signals
 
-        # Async tasks — domain + LLM page type równolegle
+        # Async tasks - domain + LLM page type równolegle
         domain_task = analyze_domain(url)
         page_type_task = classify_page_type(title, text, meta)
 
@@ -179,7 +179,7 @@ async def analyze(request: AnalyzeRequest):
 # ============================
 @app.post("/analyze/batch")
 async def analyze_batch(requests: list[AnalyzeRequest]):
-    """Batch analysis — max 5 URLs at once."""
+    """Batch analysis - max 5 URLs at once."""
     if len(requests) > 5:
         raise HTTPException(status_code=400, detail="Maximum 5 URLs per batch")
 

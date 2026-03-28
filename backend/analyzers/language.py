@@ -1,16 +1,16 @@
 """
-language_analysis.py — v2 (increased sensitivity)
+language_analysis.py - v2 (increased sensitivity)
 
 Dwuwarstwowa analiza języka:
-  Warstwa 1 — deterministyczna (listy słów, regex, metryki tekstu)
-  Warstwa 2 — model AI (semantyczna ocena kontekstowa)
+  Warstwa 1 - deterministyczna (listy słów, regex, metryki tekstu)
+  Warstwa 2 - model AI (semantyczna ocena kontekstowa)
 
 Zmiany vs v1:
   • Dodano detekcję nieformalności (slang, internet culture)
   • Dodano detekcję toksyczności (hate speech, agresja)
   • Dodano ocenę jakości tekstu (struktura, interpunkcja, słownictwo)
   • Dual scoring: density + absolute (krótkie teksty nie uciekają)
-  • Nieliniowa amplifikacja — małe wartości mają większy wpływ
+  • Nieliniowa amplifikacja - małe wartości mają większy wpływ
   • Obniżone progi saturacji
   • Wyższe wagi kar
 """
@@ -348,7 +348,7 @@ TOXIC_PL = [
 # ────────────── NOWE: WZORCE AGRESJI (regex) ──────────────
 
 AGGRESSIVE_PATTERNS_RAW = [
-    # EN — bezpośrednie ataki
+    # EN - bezpośrednie ataki
     r"kill\s+your\s*self",
     r"go\s+(and\s+)?die",
     r"drink\s+bleach",
@@ -361,7 +361,7 @@ AGGRESSIVE_PATTERNS_RAW = [
     r"eat\s+shit",
     r"piece\s+of\s+shit",
     r"waste\s+of\s+(space|oxygen|air|skin)",
-    # PL — bezpośrednie ataki
+    # PL - bezpośrednie ataki
     r"wypierdalaj",
     r"spierdalaj",
     r"zabij\s+się",
@@ -495,7 +495,7 @@ def _dual_score(
 
 def _amplify(score: float, power: float = 0.65) -> float:
     """
-    Nieliniowa amplifikacja — małe wartości stają się bardziej odczuwalne.
+    Nieliniowa amplifikacja - małe wartości stają się bardziej odczuwalne.
 
     Bez amplifikacji:  0.1 → 0.1   → kara: 2.5 pkt (z 25 max)
     Z amplifikacją:    0.1 → 0.22  → kara: 5.5 pkt
@@ -538,7 +538,7 @@ def _text_quality_score(text: str) -> float:
     words = text.split()
     word_count = len(words)
     if word_count < 5:
-        return 0.3  # zbyt mało tekstu — niska pewność, obniżamy
+        return 0.3  # zbyt mało tekstu - niska pewność, obniżamy
 
     # ── 1. Kapitalizacja zdań ──
     sentences = re.split(r"[.!?]+", text)
@@ -563,7 +563,7 @@ def _text_quality_score(text: str) -> float:
     unique_lower = set(w.lower() for w in words)
     raw_ttr = len(unique_lower) / word_count
 
-    # TTR naturalnie spada z długością tekstu — normalizujemy
+    # TTR naturalnie spada z długością tekstu - normalizujemy
     # Dla 100 słów dobry TTR > 0.6, dla 1000 słów > 0.35
     expected_ttr = 0.75 - 0.35 * min(word_count / 1000, 1.0)
     ttr_score = min(raw_ttr / max(expected_ttr, 0.1), 1.0)
@@ -644,7 +644,7 @@ def _clickbait_score(title: str, text_opening: str) -> float:
 
 
 # ╔══════════════════════════════════════════════════════════════╗
-# ║               WARSTWA 1 — ANALIZA REGUŁOWA                  ║
+# ║               WARSTWA 1 - ANALIZA REGUŁOWA                  ║
 # ╚══════════════════════════════════════════════════════════════╝
 
 def rule_based_analysis(text: str, title: str) -> tuple[RuleBasedScores, list[str], dict]:
@@ -683,7 +683,7 @@ def rule_based_analysis(text: str, title: str) -> tuple[RuleBasedScores, list[st
     title_toxic = _count_matches(title_lower, TOXIC_EN + TOXIC_PL)
 
     # ══════════════════════════════════════
-    # SCORING — dual (density + absolute)
+    # SCORING - dual (density + absolute)
     # ══════════════════════════════════════
     # Format: _dual_score(hits, per_100, density_ceiling, absolute_ceiling)
     # Niższe ceiling = wyższa czułość
@@ -859,7 +859,7 @@ def rule_based_analysis(text: str, title: str) -> tuple[RuleBasedScores, list[st
 
 
 # ╔══════════════════════════════════════════════════════════════╗
-# ║            WARSTWA 2 — ANALIZA AI (delegowana)               ║
+# ║            WARSTWA 2 - ANALIZA AI (delegowana)               ║
 # ╚══════════════════════════════════════════════════════════════╝
 
 async def _get_ai_scores(text: str, title: str) -> AILanguageScores | None:
@@ -869,7 +869,7 @@ async def _get_ai_scores(text: str, title: str) -> AILanguageScores | None:
         # Only for testing :3
         # throw(ImportError)
     except ImportError:
-        logger.warning("ai_handler nie jest dostępny — pomijam analizę AI")
+        logger.warning("ai_handler nie jest dostępny - pomijam analizę AI")
         return None
     except Exception as e:
         logger.error("Błąd analizy AI: %s", e, exc_info=True)
@@ -969,7 +969,7 @@ async def analyze_language(text: str, title: str = "") -> LanguageResult:
 
     signals = list(rule_signals)
     if ai_scores and ai_scores.confidence < 0.5:
-        signals.append("AI: niska pewność oceny — wynik może być nieprecyzyjny")
+        signals.append("AI: niska pewność oceny - wynik może być nieprecyzyjny")
 
     details = {
         **rule_details,
@@ -992,7 +992,7 @@ async def analyze_language(text: str, title: str = "") -> LanguageResult:
 
 
 # def analyze_language_sync(text: str, title: str = "") -> LanguageResult:
-#     """Wariant synchroniczny — tylko reguły, bez AI."""
+#     """Wariant synchroniczny - tylko reguły, bez AI."""
 #     rule_scores, rule_signals, rule_details = rule_based_analysis(text, title)
 
 #     language_trust = _compute_language_trust(

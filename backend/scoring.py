@@ -14,7 +14,7 @@ from schemas import (
 # PAGE TYPE MULTIPLIERS
 # ============================
 # Dla każdego typu strony, jak bardzo liczy się dany sygnał.
-# Np. poetry: language_trust * 0.1 — bo emocjonalny język jest naturalny.
+# Np. poetry: language_trust * 0.1 - bo emocjonalny język jest naturalny.
 
 TYPE_MULTIPLIERS = {
     "poetry": {
@@ -149,7 +149,7 @@ def compute_final_score(
         elif label in moderate_patterns:
             misinfo_bonus += 4
 
-    # Bonus za satire/parody — zmniejsz ryzyko
+    # Bonus za satire/parody - zmniejsz ryzyko
     if "satire_parody" in misinfo_labels:
         misinfo_bonus -= 15
 
@@ -198,7 +198,7 @@ def compute_final_score(
     if not explanations:
         explanations = ["No specific risk signals identified."]
 
-    # ---- Misinfo patterns — filtruj none_detected jeśli są inne ----
+    # ---- Misinfo patterns - filtruj none_detected jeśli są inne ----
     patterns = [l for l in misinfo_labels if l != "none_detected"]
     if not patterns and "none_detected" in misinfo_labels:
         patterns = ["none_detected"]

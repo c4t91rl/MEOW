@@ -1,5 +1,5 @@
 """
-ai_handler.py — Warstwa AI analizy języka (Gemini)
+ai_handler.py - Warstwa AI analizy języka (Gemini)
 
 Semantyczna ocena kontekstowa tekstu:
   • wulgarność (z uwzględnieniem kontekstu i eufemizmów)
@@ -32,7 +32,7 @@ def _get_client() -> Optional[genai.Client]:
     """Tworzy klienta Gemini na podstawie ustawień z ../.env"""
     settings = get_settings()
     if not settings.gemini_api_key:
-        logger.warning("Brak GEMINI_API_KEY — analiza AI języka wyłączona")
+        logger.warning("Brak GEMINI_API_KEY - analiza AI języka wyłączona")
         return None
 
     return genai.Client(
@@ -49,7 +49,7 @@ def _get_client() -> Optional[genai.Client]:
 
 LANGUAGE_ANALYSIS_PROMPT = """\
 You are an expert linguistic analyst evaluating the COMMUNICATION STYLE of a text.
-You do NOT judge whether claims are true or false — only HOW they are expressed.
+You do NOT judge whether claims are true or false - only HOW they are expressed.
 
 For each axis, return a float score from 0.0 (none) to 1.0 (extreme).
 
@@ -186,7 +186,7 @@ async def analyze_language_ai(
     - nieprawidłowa odpowiedź
     """
     if not text or not text.strip():
-        logger.debug("Pusty tekst — pomijam analizę AI języka")
+        logger.debug("Pusty tekst - pomijam analizę AI języka")
         return None
 
     client = _get_client()
@@ -209,7 +209,7 @@ async def analyze_language_ai(
             model=settings.gemini_model,
             contents=prompt,
             config=types.GenerateContentConfig(
-                temperature=0.1,  # niska — chcemy deterministycznych ocen
+                temperature=0.1,  # niska - chcemy deterministycznych ocen
                 max_output_tokens=300,
             ),
         )

@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 def _get_client() -> Optional[genai.Client]:
     settings = get_settings()
     if not settings.gemini_api_key:
-        logger.warning("No Gemini API key — LLM features disabled")
+        logger.warning("No Gemini API key - LLM features disabled")
         return None
     
     return genai.Client(
@@ -175,7 +175,7 @@ MISINFO_PROMPT = """You are analyzing a webpage for communication patterns commo
 IMPORTANT:
 - Do NOT determine whether the claims are TRUE or FALSE
 - Only identify COMMUNICATION PATTERNS and structural signals
-- Be conservative — only flag clear patterns
+- Be conservative - only flag clear patterns
 
 Possible labels (choose ALL that apply, or "none_detected"):
 - sensationalism: exaggerated, emotionally charged language designed to provoke strong reactions
@@ -279,7 +279,7 @@ async def detect_misinfo_patterns(
     return _fallback_misinfo(heuristic_signals)
 
 def _fallback_misinfo(signals: list[str]) -> LLMMisinfoResult:
-    """Fallback gdy LLM niedostępny — opieramy się na heurystykach."""
+    """Fallback gdy LLM niedostępny - opieramy się na heurystykach."""
     labels = []
     explanations = []
 
@@ -299,7 +299,7 @@ def _fallback_misinfo(signals: list[str]) -> LLMMisinfoResult:
 
     if not labels:
         labels = ["none_detected"]
-        explanations = ["No significant patterns detected (limited analysis — LLM unavailable)"]
+        explanations = ["No significant patterns detected (limited analysis - LLM unavailable)"]
 
     return LLMMisinfoResult(
         labels=labels,

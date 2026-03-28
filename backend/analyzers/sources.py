@@ -6,7 +6,7 @@ from schemas import SourceResult
 # ============================
 # TRUSTED DOMAINS
 # ============================
-# Nie jest to pełna baza — na hackathon wystarczy.
+# Nie jest to pełna baza - na hackathon wystarczy.
 
 TRUSTED_DOMAINS = [
     # Encyklopedie / wiedza
@@ -261,7 +261,7 @@ def analyze_sources(
     if social_count > 0 and trusted_count == 0:
         signals.append("External links primarily lead to social media")
     if word_count < 50:
-        signals.append("Very short content — limited substance for analysis")
+        signals.append("Very short content - limited substance for analysis")
 
     if not signals:
         signals.append("Source transparency appears adequate")

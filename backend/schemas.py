@@ -63,7 +63,7 @@ class AnalyzeResponse(BaseModel):
 
 
 # ============================
-# INTERNAL — Language Analysis
+# INTERNAL - Language Analysis
 # ============================
 
 class RuleBasedScores(BaseModel):
@@ -91,7 +91,7 @@ class AILanguageScores(BaseModel):
 
 
 class LanguageResult(BaseModel):
-    """Końcowy wynik analizy językowej — JEDNA definicja."""
+    """Końcowy wynik analizy językowej - JEDNA definicja."""
     language_trust: int = 0
 
     # Cztery osie oceny (0.0–1.0, im wyżej tym gorzej)
@@ -103,13 +103,13 @@ class LanguageResult(BaseModel):
     signals: list[str] = Field(default_factory=list)
     details: dict = Field(default_factory=dict)
 
-    # Składowe — do debugowania
+    # Składowe - do debugowania
     rule_based: Optional[RuleBasedScores] = None
     ai_based: Optional[AILanguageScores] = None
 
 
 # ============================
-# INTERNAL — Source & Domain
+# INTERNAL - Source & Domain
 # ============================
 
 class SourceResult(BaseModel):
@@ -126,7 +126,7 @@ class DomainResult(BaseModel):
 
 
 # ============================
-# INTERNAL — LLM Results
+# INTERNAL - LLM Results
 # ============================
 
 class LLMPageTypeResult(BaseModel):
