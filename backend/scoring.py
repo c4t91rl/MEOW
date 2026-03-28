@@ -21,13 +21,13 @@ TYPE_MULTIPLIERS = {
         "language": 0.10,
         "source": 0.20,
         "domain": 1.0,
-        "transparency": 0.20,
+        "transparency": 0.0,
     },
     "satire": {
         "language": 0.20,
         "source": 0.30,
         "domain": 1.0,
-        "transparency": 0.20,
+        "transparency": 0.0,
     },
     "opinion": {
         "language": 0.50,
@@ -57,7 +57,7 @@ TYPE_MULTIPLIERS = {
         "language": 0.90,
         "source": 1.0,
         "domain": 1.0,
-        "transparency": 1.0,
+        "transparency": 0.0,
     },
     "government": {
         "language": 0.80,
@@ -81,9 +81,9 @@ TYPE_MULTIPLIERS = {
 
 # Wagi poszczególnych składowych w overall_risk
 WEIGHTS = {
-    "language": 0.30,
+    "language": 0.35,
     "source": 0.30,
-    "domain": 0.20,
+    "domain": 0.15,
     "transparency": 0.20,
 }
 
