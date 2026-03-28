@@ -42,8 +42,8 @@ TYPE_MULTIPLIERS = {
         "transparency": 0.80,
     },
     "forum": {
-        "language": 0.60,
-        "source": 0.50,
+        "language": 0.80,
+        "source": 0.80,
         "domain": 1.0,
         "transparency": 0.0,
     },
@@ -54,10 +54,10 @@ TYPE_MULTIPLIERS = {
         "transparency": 0.60,
     },
     "scientific": {
-        "language": 0.90,
+        "language": 0.50,
         "source": 1.0,
         "domain": 1.0,
-        "transparency": 0.0,
+        "transparency": 0.50,
     },
     "government": {
         "language": 0.80,
@@ -71,6 +71,12 @@ TYPE_MULTIPLIERS = {
         "domain": 1.0,
         "transparency": 1.0,
     },
+    "wiki": {
+        "language": 0.50,
+        "source": 1.0,
+        "domain": 1.0,
+        "transparency": 0.0,
+    },
     "unknown": {
         "language": 0.80,
         "source": 0.80,
@@ -81,10 +87,10 @@ TYPE_MULTIPLIERS = {
 
 # Wagi poszczególnych składowych w overall_risk
 WEIGHTS = {
-    "language": 0.35,
+    "language": 0.50,
     "source": 0.30,
     "domain": 0.15,
-    "transparency": 0.20,
+    "transparency": 0.30,
 }
 
 

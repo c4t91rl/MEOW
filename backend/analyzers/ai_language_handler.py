@@ -47,7 +47,7 @@ def _get_client() -> Optional[genai.Client]:
 # ║                       PROMPT                                 ║
 # ╚══════════════════════════════════════════════════════════════╝
 
-LANGUAGE_ANALYSIS_PROMPT = """\
+LANGUAGE_ANALYSIS_PROMPT = """
 You are an expert linguistic analyst evaluating the COMMUNICATION STYLE of a text.
 You do NOT judge whether claims are true or false - only HOW they are expressed.
 

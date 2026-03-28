@@ -55,7 +55,8 @@ def _safe_parse_json(text: str) -> Optional[dict]:
 # PAGE TYPE CLASSIFICATION
 # ============================
 
-PAGE_TYPE_PROMPT = """You are a webpage classifier. Classify this webpage into EXACTLY ONE category.
+PAGE_TYPE_PROMPT = """
+You are a webpage classifier. Classify this webpage into EXACTLY ONE category.
 
 Categories:
 - news: factual news reporting from a media outlet
@@ -66,7 +67,8 @@ Categories:
 - forum: forum discussion, comments section, Q&A
 - commercial: e-commerce, product page, advertisement, corporate site
 - scientific: academic paper, research article, scientific publication
-- government: official government or institutional page
+- government: only official government
+- wiki: community driven public knowledge base
 - unknown: cannot determine
 
 INPUT:
@@ -79,7 +81,8 @@ Text excerpt (first 1500 chars):
 {text_excerpt}
 
 Return ONLY valid JSON, no other text:
-{{"page_type": "...", "confidence": 0.0, "rationale": "one sentence explanation"}}"""
+{{"page_type": "...", "confidence": 0.0, "rationale": "one sentence explanation"}}
+"""
 
 
 async def classify_page_type(
@@ -120,7 +123,8 @@ async def classify_page_type(
         if parsed and "page_type" in parsed:
             valid_types = [
                 "news", "opinion", "blog", "satire", "poetry",
-                "forum", "commercial", "scientific", "government", "unknown",
+                "forum", "commercial", "scientific", "government",
+                "wiki", "unknown",
             ]
             pt = parsed["page_type"].lower().strip()
             if pt not in valid_types:
