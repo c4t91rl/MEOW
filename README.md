@@ -71,15 +71,15 @@ Since we are in active development, you can run the MEOW extension locally:
     pip install -r requirements.txt
     ```
 
-5.  **Get an API key** for [INSERT MODEL].
+5.  **Get an API key** for gemma-3-4b-it.
 
 6.  **Create the `.env` file** (in the backend folder).
 
     **.env Structure:**
 
     ```env
-    OPENAI_API_KEY=[YOUR_API_KEY]
-    OPENAI_MODEL=gpt-4o-mini
+    GEMINI_API_KEY=[YOUR_API_KEY]
+    GEMINI_MODEL=gemma-3-4b-it
     PORT=8000
     ```
 
