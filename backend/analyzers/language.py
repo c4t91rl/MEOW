@@ -651,7 +651,7 @@ def rule_based_analysis(text: str, title: str) -> tuple[RuleBasedScores, list[st
     if not text.strip():
         return (
             RuleBasedScores(),
-            ["Brak treści tekstowej do analizy"],
+            ["No text provided"],
             {},
         )
 
@@ -869,10 +869,10 @@ async def _get_ai_scores(text: str, title: str) -> AILanguageScores | None:
         # Only for testing :3
         # throw(ImportError)
     except ImportError:
-        logger.warning("ai_language_handler nie jest dostępny - pomijam analizę AI")
+        logger.warning("ai_language_handler is not available - skipping AI analysis")
         return None
     except Exception as e:
-        logger.error("Błąd analizy AI: %s", e, exc_info=True)
+        logger.error("AI analyzer error: %s", e, exc_info=True)
         return None
 
 
@@ -969,7 +969,7 @@ async def analyze_language(text: str, title: str = "") -> LanguageResult:
 
     signals = list(rule_signals)
     if ai_scores and ai_scores.confidence < 0.5:
-        signals.append("AI: niska pewność oceny - wynik może być nieprecyzyjny")
+        signals.append("AI: Low confidence score – the result may be inaccurate.")
 
     details = {
         **rule_details,
