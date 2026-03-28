@@ -88,9 +88,9 @@ TYPE_MULTIPLIERS = {
 # Wagi poszczególnych składowych w overall_risk
 WEIGHTS = {
     "language": 0.50,
-    "source": 0.30,
+    "source": 0.50,
     "domain": 0.15,
-    "transparency": 0.30,
+    "transparency": 0.10,
 }
 
 

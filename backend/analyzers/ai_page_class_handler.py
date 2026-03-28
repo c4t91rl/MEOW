@@ -303,7 +303,7 @@ def _fallback_misinfo(signals: list[str]) -> LLMMisinfoResult:
 
     if not labels:
         labels = ["none_detected"]
-        explanations = ["No significant patterns detected (limited analysis - LLM unavailable)"]
+        # explanations = ["No significant patterns detected (limited analysis - LLM unavailable)"]
 
     return LLMMisinfoResult(
         labels=labels,
