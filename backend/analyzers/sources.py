@@ -214,7 +214,7 @@ def analyze_sources(
     # ============================
     # TRANSPARENCY (0-100)
     # ============================
-    transparency = 60  # baseline
+    transparency = 50  # baseline
 
     if author_present:
         transparency += 20

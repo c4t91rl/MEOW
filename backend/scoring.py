@@ -30,10 +30,10 @@ TYPE_MULTIPLIERS = {
         "transparency": 0.0,
     },
     "opinion": {
-        "language": 0.50,
-        "source": 0.75,
+        "language": 0.80,
+        "source": 0.80,
         "domain": 1.0,
-        "transparency": 0.85,
+        "transparency": 0.30,
     },
     "blog": {
         "language": 0.70,
