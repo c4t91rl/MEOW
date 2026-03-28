@@ -18,7 +18,7 @@ Zmiany vs v1:
 import re
 import math
 import logging
-from .ai_handler import analyze_language_ai
+from .ai_language_handler import analyze_language_ai
 from schemas import LanguageResult, RuleBasedScores, AILanguageScores
 
 logger = logging.getLogger(__name__)
@@ -869,7 +869,7 @@ async def _get_ai_scores(text: str, title: str) -> AILanguageScores | None:
         # Only for testing :3
         # throw(ImportError)
     except ImportError:
-        logger.warning("ai_handler nie jest dostępny - pomijam analizę AI")
+        logger.warning("ai_language_handler nie jest dostępny - pomijam analizę AI")
         return None
     except Exception as e:
         logger.error("Błąd analizy AI: %s", e, exc_info=True)

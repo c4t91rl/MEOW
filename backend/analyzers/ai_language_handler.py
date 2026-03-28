@@ -1,5 +1,5 @@
 """
-ai_handler.py - Warstwa AI analizy języka (Gemini)
+ai_language_handler.py - Warstwa AI analizy języka (Gemini)
 
 Semantyczna ocena kontekstowa tekstu:
   • wulgarność (z uwzględnieniem kontekstu i eufemizmów)

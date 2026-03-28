@@ -1,7 +1,7 @@
 from .language import analyze_language
 from .sources import analyze_sources
 from .domain import analyze_domain
-from .llm_classifier import classify_page_type, detect_misinfo_patterns
+from .ai_page_class_handler import classify_page_type, detect_misinfo_patterns
 
 __all__ = [
     "analyze_language",
