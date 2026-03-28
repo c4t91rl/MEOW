@@ -244,6 +244,11 @@ function renderResults(data) {
 
   // ---- Score Breakdown ----
   const scores = data.scores || {};
+  if (data.page_type.weights[3]==0.0) {
+    const transElement = $(`#transparency-info`);
+    transElement.style.display = 'none'
+  }
+
 
   renderBar("lang", scores.language_trust ?? 0, true);
   renderBar("source", scores.source_trust ?? 50, true);
