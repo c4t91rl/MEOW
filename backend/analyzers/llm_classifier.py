@@ -203,73 +203,80 @@ Return ONLY valid JSON, no other text:
 {{"labels": ["label1", "label2"], "confidence": 0.0, "explanations": ["explanation1", "explanation2"]}}"""
 
 
+# async def detect_misinfo_patterns(
+#     title: str,
+#     text: str,
+#     meta: dict,
+#     heuristic_signals: list[str],
+# ) -> LLMMisinfoResult:
+#     """Wykrywa wzorce dezinformacyjne przez LLM."""
+#     client = _get_client()
+
+#     if client is None:
+#         return _fallback_misinfo(heuristic_signals)
+
+#     signals_str = "\n".join(f"- {s}" for s in heuristic_signals) if heuristic_signals else "- No automated signals detected"
+
+#     prompt = MISINFO_PROMPT.format(
+#         title=title[:200],
+#         author=meta.get("author", "N/A"),
+#         published=meta.get("publishedTime", "N/A"),
+#         site_name=meta.get("siteName", "N/A"),
+#         signals=signals_str,
+#         text_excerpt=text[:3000],
+#     )
+
+#     try:
+#         settings = get_settings()
+        
+#         response = await client.aio.models.generate_content(
+#             model=settings.gemini_model,
+#             contents=prompt,
+#             config=types.GenerateContentConfig(
+#                 temperature=0.2,
+#                 max_output_tokens=500,
+#             ),
+#         )
+
+#         content = response.text or ""
+#         parsed = _safe_parse_json(content)
+
+#         if parsed and "labels" in parsed:
+#             valid_labels = [
+#                 "sensationalism", "manipulative_framing", "conspiracy_cues",
+#                 "missing_sourcing", "authority_mimicry", "unverified_claims",
+#                 "satire_parody", "none_detected",
+#             ]
+#             labels = [l for l in parsed["labels"] if l in valid_labels]
+#             if not labels:
+#                 labels = ["none_detected"]
+
+#             explanations = parsed.get("explanations", [])
+#             if isinstance(explanations, list):
+#                 explanations = [str(e) for e in explanations[:6]]
+#             else:
+#                 explanations = []
+
+#             return LLMMisinfoResult(
+#                 labels=labels,
+#                 confidence=min(max(float(parsed.get("confidence", 0.5)), 0), 1),
+#                 explanations=explanations,
+#             )
+
+#     except TimeoutError:
+#         logger.warning("LLM timeout for misinfo detection")
+#     except Exception as e:
+#         logger.error(f"LLM misinfo error: {e}")
+
+#     return _fallback_misinfo(heuristic_signals)
+
 async def detect_misinfo_patterns(
     title: str,
     text: str,
     meta: dict,
     heuristic_signals: list[str],
 ) -> LLMMisinfoResult:
-    """Wykrywa wzorce dezinformacyjne przez LLM."""
-    client = _get_client()
-
-    if client is None:
-        return _fallback_misinfo(heuristic_signals)
-
-    signals_str = "\n".join(f"- {s}" for s in heuristic_signals) if heuristic_signals else "- No automated signals detected"
-
-    prompt = MISINFO_PROMPT.format(
-        title=title[:200],
-        author=meta.get("author", "N/A"),
-        published=meta.get("publishedTime", "N/A"),
-        site_name=meta.get("siteName", "N/A"),
-        signals=signals_str,
-        text_excerpt=text[:3000],
-    )
-
-    try:
-        settings = get_settings()
-        
-        response = await client.aio.models.generate_content(
-            model=settings.gemini_model,
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                temperature=0.2,
-                max_output_tokens=500,
-            ),
-        )
-
-        content = response.text or ""
-        parsed = _safe_parse_json(content)
-
-        if parsed and "labels" in parsed:
-            valid_labels = [
-                "sensationalism", "manipulative_framing", "conspiracy_cues",
-                "missing_sourcing", "authority_mimicry", "unverified_claims",
-                "satire_parody", "none_detected",
-            ]
-            labels = [l for l in parsed["labels"] if l in valid_labels]
-            if not labels:
-                labels = ["none_detected"]
-
-            explanations = parsed.get("explanations", [])
-            if isinstance(explanations, list):
-                explanations = [str(e) for e in explanations[:6]]
-            else:
-                explanations = []
-
-            return LLMMisinfoResult(
-                labels=labels,
-                confidence=min(max(float(parsed.get("confidence", 0.5)), 0), 1),
-                explanations=explanations,
-            )
-
-    except TimeoutError:
-        logger.warning("LLM timeout for misinfo detection")
-    except Exception as e:
-        logger.error(f"LLM misinfo error: {e}")
-
     return _fallback_misinfo(heuristic_signals)
-
 
 def _fallback_misinfo(signals: list[str]) -> LLMMisinfoResult:
     """Fallback gdy LLM niedostępny — opieramy się na heurystykach."""
