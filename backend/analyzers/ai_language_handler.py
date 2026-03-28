@@ -154,7 +154,7 @@ def _parse_scores(parsed: dict) -> Optional[AILanguageScores]:
 
     if not all(k in parsed for k in required_keys):
         logger.warning(
-            "Odpowiedź AI nie zawiera wymaganych kluczy. Otrzymano: %s",
+            "AI language analysis missing required keys: %s",
             list(parsed.keys()),
         )
         return None
@@ -186,7 +186,7 @@ async def analyze_language_ai(
     - nieprawidłowa odpowiedź
     """
     if not text or not text.strip():
-        logger.debug("Pusty tekst - pomijam analizę AI języka")
+        logger.debug("No text provided for AI language analysis")
         return None
 
     client = _get_client()
@@ -215,12 +215,12 @@ async def analyze_language_ai(
         )
 
         raw_text = response.text or ""
-        logger.debug("Odpowiedź AI (language): %s", raw_text[:500])
+        logger.debug("AI language analysis response: %s", raw_text[:500])
 
         parsed = _safe_parse_json(raw_text)
         if parsed is None:
             logger.warning(
-                "Nie udało się sparsować JSON z odpowiedzi AI: %s",
+                "Failed to parse JSON from AI response: %s",
                 raw_text[:300],
             )
             return None
@@ -241,8 +241,8 @@ async def analyze_language_ai(
         return scores
 
     except TimeoutError:
-        logger.warning("Timeout podczas analizy AI języka")
+        logger.warning("Timeout during AI language analysis")
         return None
     except Exception as e:
-        logger.error("Błąd analizy AI języka: %s", e, exc_info=True)
+        logger.error("AI analyzer error: %s", e, exc_info=True)
         return None
