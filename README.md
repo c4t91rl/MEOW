@@ -31,7 +31,7 @@ We don't just throw random numbers at the user. MEOW is built on transparency an
 3.  **Scoring Engine:** Calculates a weighted risk score based on the extracted metrics.
 4.  **Real-time UI:** Generates instant signals and warnings in the browser extension.
 
-## 🚀 Installation (For Developers)
+## Installation (For Developers)
 
 Since we are in active development, you can run the MEOW extension locally:
 
